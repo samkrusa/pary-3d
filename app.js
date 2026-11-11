@@ -968,9 +968,9 @@
     // на узких экранах кристалл меньше и уходит вверх-вправо, чтобы не мешать тексту
     const layout = () => {
       const wide = innerWidth >= 1000;
-      group.position.x = wide ? 4.6 : 0.6;
-      group.position.y = wide ? 2.4 : 3.4;
-      group.scale.setScalar(wide ? 0.92 : 0.58);
+      group.position.x = wide ? 4.5 : 0.7;
+      group.position.y = wide ? 0.9 : 3.4;
+      group.scale.setScalar(wide ? 0.88 : 0.58);
     };
     layout();
 

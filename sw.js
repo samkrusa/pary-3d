@@ -1,11 +1,11 @@
 /* Пары 3D — кэш оболочки и расписаний: приложение открывается без сети. */
 
-const VERSION = "pary3d-v1";
+const VERSION = "pary3d-v2";
 const SHELL = [
   "./",
   "index.html",
-  "style.css",
-  "app.js",
+  "style.css?v=1",
+  "app.js?v=1",
   "three.min.js",
   "icon.svg",
   "manifest.webmanifest",
