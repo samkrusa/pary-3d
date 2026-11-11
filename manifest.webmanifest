@@ -1,0 +1,20 @@
+{
+  "name": "Пары 3D — расписание КНИТУ",
+  "short_name": "Пары 3D",
+  "description": "Расписание занятий КНИТУ в трёхмерном интерфейсе: группы, преподаватели, аудитории.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "lang": "ru",
+  "background_color": "#05070e",
+  "theme_color": "#05070e",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

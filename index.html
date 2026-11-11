@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Пары 3D — расписание КНИТУ</title>
+<meta name="description" content="Расписание занятий КНИТУ: группы, преподаватели, аудитории. Трёхмерная версия интерфейса, работает офлайн.">
+<meta name="theme-color" content="#070a12">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Пары 3D — расписание КНИТУ">
+<meta property="og:description" content="Расписание КНИТУ в трёхмерном интерфейсе. Группы, преподаватели, аудитории.">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@500;700&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<canvas id="scene" aria-hidden="true"></canvas>
+<div class="bg-aurora" aria-hidden="true"></div>
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="bg-noise" aria-hidden="true"></div>
+<div class="bg-vignette" aria-hidden="true"></div>
+
+<div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+<main class="app" id="app">
+
+  <header class="topbar" id="topbar">
+    <button class="brand glass tilt" id="groupBtn" type="button" aria-haspopup="dialog">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M6 24V8l10 12V8" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24" cy="21.5" r="3" fill="currentColor"/></svg>
+      </span>
+      <span class="brand-text">
+        <span class="brand-name" id="groupName">Выбрать группу</span>
+        <span class="brand-sub" id="groupSub">КНИТУ · расписание</span>
+      </span>
+      <span class="brand-chev" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    </button>
+
+    <div class="topbar-right">
+      <button class="pill glass tilt" id="shareBtn" type="button" hidden>
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v11M8 7l4-4 4 4M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Поделиться</span>
+      </button>
+      <button class="pill is-accent glass tilt" id="todayBtn" type="button">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="13" r="4" stroke="currentColor" stroke-width="2"/><path d="M12 3v2M4.2 8.2l1.6 1.6M19.8 8.2l-1.6 1.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <span>Сегодня</span>
+      </button>
+    </div>
+  </header>
+
+  <section class="hero-block">
+    <div class="hero-copy">
+      <p class="eyebrow"><span class="dot"></span><span id="heroSemester">1 семестр</span></p>
+      <h1 class="hero-title">
+        <span id="heroGroup" class="hero-name">Расписание</span>
+        <span class="hero-sub" id="heroInst">КНИТУ · группы, преподаватели, аудитории</span>
+      </h1>
+    </div>
+    <div class="hero-stats" aria-hidden="true">
+      <div class="stat glass tilt"><b id="statGroups">—</b><span>групп</span></div>
+      <div class="stat glass tilt"><b id="statToday">—</b><span>пар сегодня</span></div>
+      <div class="stat glass tilt"><b id="statWeek">—</b><span>пар на неделе</span></div>
+    </div>
+  </section>
+
+  <section class="weekbar glass tilt" id="weekbar">
+    <button class="arrow" id="prevWeek" type="button" aria-label="Предыдущая неделя">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M15 5l-7 7 7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="week-label" id="weekLabel">
+      <span class="week-dates">—</span>
+      <span class="week-parity"></span>
+    </div>
+    <button class="arrow" id="nextWeek" type="button" aria-label="Следующая неделя">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </section>
+
+  <nav class="days" id="days" aria-label="Дни недели"></nav>
+
+  <div class="chip-row">
+    <div class="updated" id="updated" hidden><i></i><span></span></div>
+    <div class="offline-note" id="offline" hidden>Нет сети — показаны сохранённые данные</div>
+  </div>
+
+  <div class="stage" id="stage">
+    <section class="content" id="content" aria-live="polite"></section>
+  </div>
+
+  <footer class="foot" id="foot"></footer>
+</main>
+
+<!-- выбор группы -->
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet-backdrop" data-close></div>
+  <div class="sheet-panel glass" role="dialog" aria-modal="true" aria-label="Выбор группы" tabindex="-1">
+    <div class="sheet-grip" aria-hidden="true"></div>
+    <div class="sheet-head">
+      <div>
+        <p class="sheet-kicker">КНИТУ</p>
+        <h2>Группа</h2>
+      </div>
+      <button class="icon-btn" type="button" data-close aria-label="Закрыть">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="search">
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M20 20l-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="searchInput" type="search" placeholder="Найти группу — например, 861" aria-label="Поиск группы" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="chips" id="instChips"></div>
+    <div class="sheet-list" id="groupList"></div>
+  </div>
+</div>
+
+<!-- карточка пары -->
+<div class="modal" id="lessonModal" hidden>
+  <div class="modal-backdrop" data-lesson-close></div>
+  <div class="modal-card glass" role="dialog" aria-modal="true" aria-labelledby="lessonTitle" tabindex="-1">
+    <button class="icon-btn modal-x" type="button" data-lesson-close aria-label="Закрыть">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div id="lessonBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script src="three.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
