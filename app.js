@@ -980,7 +980,6 @@
       ty = (e.clientY / innerHeight - .5) * 2;
     }, { passive: true });
 
-    let rx = 0, ry = 0;
     let visible = !document.hidden;
 
     const onResize = () => {

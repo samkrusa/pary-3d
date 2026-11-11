@@ -494,10 +494,11 @@ a:hover { text-decoration: underline; }
   font-size: .76rem;
   letter-spacing: .02em;
   color: var(--muted);
-  background: rgba(18, 25, 42, .5);
+  background: rgba(10, 15, 26, .82);
   border: 1px solid var(--line);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 10px 26px -20px #000;
 }
 .updated i {
   width: 6px; height: 6px; border-radius: 50%;
@@ -668,7 +669,7 @@ a:hover { text-decoration: underline; }
   font-variant-numeric: tabular-nums;
 }
 
-.teacher { color: var(--muted); background: rgba(255, 255, 255, .045); border: 1px solid var(--line); font-weight: 600; }
+.teacher { color: var(--muted); background: rgba(12, 18, 30, .55); border: 1px solid var(--line); font-weight: 600; }
 .sub { color: var(--violet); background: rgba(157, 140, 255, .13); border: 1px solid rgba(157, 140, 255, .26); }
 .status-badge { color: var(--rose); background: rgba(255, 143, 163, .13); border: 1px solid rgba(255, 143, 163, .3); }
 
