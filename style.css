@@ -741,6 +741,10 @@ a:hover { text-decoration: underline; }
   grid-template-columns: repeat(var(--cols, 6), minmax(0, 1fr));
   gap: clamp(8px, 1vw, 14px);
   align-items: start;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(140, 180, 255, .25) transparent;
 }
 
 .daycol {

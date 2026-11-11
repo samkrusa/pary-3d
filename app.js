@@ -14,7 +14,7 @@
   const MONTHS_SHORT = ["янв", "фев", "мар", "апр", "мая", "июн",
     "июл", "авг", "сен", "окт", "ноя", "дек"];
 
-  const DESKTOP_MQ = window.matchMedia("(min-width: 1000px)");
+  const DESKTOP_MQ = window.matchMedia("(min-width: 1120px)");
   const REDUCED_MQ = window.matchMedia("(prefers-reduced-motion: reduce)");
   const FINE_POINTER = window.matchMedia("(hover: hover) and (pointer: fine)");
 
